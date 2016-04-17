@@ -564,6 +564,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             TestPunctuation(SyntaxKind.GreaterThanToken);
             TestPunctuation(SyntaxKind.DotToken);
             TestPunctuation(SyntaxKind.QuestionToken);
+            TestPunctuation(SyntaxKind.CenterDotToken);
 
             // TestPunctuation(ParseKind.Hash);  preprocessor only
             TestPunctuation(SyntaxKind.SlashToken);

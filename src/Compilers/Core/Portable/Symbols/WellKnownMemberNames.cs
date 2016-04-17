@@ -194,6 +194,11 @@ namespace Microsoft.CodeAnalysis
         public const string MultiplyOperatorName = "op_Multiply";
 
         /// <summary>
+        /// The name assigned to the Unit Multiply operator.
+        /// </summary>
+        public const string UnitMultiplyOperatorName = "op_UnitMultiply";
+
+        /// <summary>
         /// The name assigned to the OnesComplement operator.
         /// </summary>
         public const string OnesComplementOperatorName = "op_OnesComplement";

@@ -38,6 +38,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         QuestionToken = 8219,
         HashToken = 8220,
         SlashToken = 8221,
+        CenterDotToken = 8222,
 
         // additional xml tokens
         SlashGreaterThanToken = 8232, // xml empty element end
@@ -236,6 +237,9 @@ namespace Microsoft.CodeAnalysis.CSharp
                                                         // This only exists in transient form during parsing.
         InterpolatedStringTextToken = 8517,             // literal text that is part of an interpolated string
 
+        UnitLiteralToken = 8518,
+
+
         // trivia
         EndOfLineTrivia = 8539,
         WhitespaceTrivia = 8540,
@@ -395,6 +399,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         TrueLiteralExpression = 8752,
         FalseLiteralExpression = 8753,
         NullLiteralExpression = 8754,
+        UnitLiteralExpression = 8755,
 
         // primary function expressions
         TypeOfExpression = 8760,

@@ -206,6 +206,7 @@ namespace Microsoft.CodeAnalysis.CSharp.CodeGeneration
                 case OperatorKind.True: return SyntaxKind.TrueKeyword;
                 case OperatorKind.UnaryNegation: return SyntaxKind.MinusToken;
                 case OperatorKind.UnaryPlus: return SyntaxKind.PlusToken;
+                case OperatorKind.UnitMultiply: return SyntaxKind.CenterDotToken;
                 default:
                     throw new ArgumentException("Unknown operator kind.");
             }

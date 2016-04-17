@@ -445,6 +445,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case SyntaxKind.GreaterThanEqualsToken:
                 case SyntaxKind.GreaterThanGreaterThanToken:
                 case SyntaxKind.ExclamationEqualsToken:
+                case SyntaxKind.CenterDotToken:
                     return true;
                 default:
                     return false;
@@ -522,6 +523,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return SyntaxKind.FalseLiteralExpression;
                 case SyntaxKind.ArgListKeyword:
                     return SyntaxKind.ArgListExpression;
+                case SyntaxKind.UnitLiteralToken:
+                    return SyntaxKind.UnitLiteralExpression;
                 default:
                     return SyntaxKind.None;
             }
@@ -601,6 +604,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return SyntaxKind.LogicalAndExpression;
                 case SyntaxKind.BarBarToken:
                     return SyntaxKind.LogicalOrExpression;
+                case SyntaxKind.CenterDotToken:
+                    return SyntaxKind.UnitMultiplyExpression;
                 default:
                     return SyntaxKind.None;
             }
@@ -1236,6 +1241,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return ">";
                 case SyntaxKind.DotToken:
                     return ".";
+                case SyntaxKind.CenterDotToken:
+                    return "·"; // center dot  '\0x0B7' (Char)183 U+00B7
                 case SyntaxKind.QuestionToken:
                     return "?";
                 case SyntaxKind.HashToken:

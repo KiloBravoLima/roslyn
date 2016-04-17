@@ -81,6 +81,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case SyntaxKind.GreaterThanEqualsToken: return WellKnownMemberNames.GreaterThanOrEqualOperatorName;
                 case SyntaxKind.GreaterThanGreaterThanToken: return WellKnownMemberNames.RightShiftOperatorName;
                 case SyntaxKind.ExclamationEqualsToken: return WellKnownMemberNames.InequalityOperatorName;
+                case SyntaxKind.CenterDotToken: return WellKnownMemberNames.UnitMultiplyOperatorName;
                 default:
                     return null;
             }

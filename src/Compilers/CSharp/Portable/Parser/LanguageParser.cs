@@ -9299,6 +9299,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                 case SyntaxKind.MinusGreaterThanToken:
                 case SyntaxKind.QuestionQuestionToken:
                 case SyntaxKind.EndOfFileToken:
+                case SyntaxKind.CenterDotToken:
                     return false;
                 default:
                     return true;
