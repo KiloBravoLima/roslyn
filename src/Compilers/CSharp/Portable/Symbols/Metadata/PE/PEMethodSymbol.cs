@@ -843,6 +843,7 @@ namespace Microsoft.CodeAnalysis.CSharp.Symbols.Metadata.PE
                         case WellKnownMemberNames.LessThanOrEqualOperatorName:
                         case WellKnownMemberNames.ModulusOperatorName:
                         case WellKnownMemberNames.MultiplyOperatorName:
+                        case WellKnownMemberNames.UnitMultiplyOperatorName:
                         case WellKnownMemberNames.RightShiftOperatorName:
                         case WellKnownMemberNames.SubtractionOperatorName:
                             return IsValidUserDefinedOperatorSignature(2) ? MethodKind.UserDefinedOperator : MethodKind.Ordinary;

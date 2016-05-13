@@ -855,7 +855,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                 // Infer operands of "·" (center dot) as Unit regardless of the other operand.
                 if (operatorToken.Kind() == SyntaxKind.CenterDotToken)
                 {
-                    return SpecializedCollections.SingletonEnumerable(this.Compilation.GetSpecialType(SpecialType.System_Unit));
+                    // return SpecializedCollections.SingletonEnumerable(this.Compilation.GetSpecialType(SpecialType.System_Unit));
+                    return SpecializedCollections.SingletonEnumerable(this.Compilation.GetSpecialType(SpecialType.System_ValueType));
                 }
 
                 // Try to figure out what's on the other side of the binop.  If we can, then just that

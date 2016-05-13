@@ -974,6 +974,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case WellKnownMemberNames.LogicalNotOperatorName: return SyntaxKind.ExclamationToken;
                 case WellKnownMemberNames.ModulusOperatorName: return SyntaxKind.PercentToken;
                 case WellKnownMemberNames.MultiplyOperatorName: return SyntaxKind.AsteriskToken;
+                case WellKnownMemberNames.UnitMultiplyOperatorName: return SyntaxKind.CenterDotToken;
                 case WellKnownMemberNames.OnesComplementOperatorName: return SyntaxKind.TildeToken;
                 case WellKnownMemberNames.RightShiftOperatorName: return SyntaxKind.GreaterThanGreaterThanToken;
                 case WellKnownMemberNames.SubtractionOperatorName: return SyntaxKind.MinusToken;

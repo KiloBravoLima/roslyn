@@ -65,6 +65,7 @@ namespace Microsoft.CodeAnalysis
             "System.RuntimeTypeHandle",
             "System.IAsyncResult",
             "System.AsyncCallback",
+          //   "System.Unit",
         };
 
         private readonly static Dictionary<string, SpecialType> s_nameToTypeIdMap;
@@ -107,6 +108,7 @@ namespace Microsoft.CodeAnalysis
             s_typeIdToTypeCodeMap[(int)SpecialType.System_Double] = Microsoft.Cci.PrimitiveTypeCode.Float64;
             s_typeIdToTypeCodeMap[(int)SpecialType.System_IntPtr] = Microsoft.Cci.PrimitiveTypeCode.IntPtr;
             s_typeIdToTypeCodeMap[(int)SpecialType.System_UIntPtr] = Microsoft.Cci.PrimitiveTypeCode.UIntPtr;
+            //s_typeIdToTypeCodeMap[(int)SpecialType.System_Unit] = Microsoft.Cci.PrimitiveTypeCode.Unit;
 
             s_typeCodeToTypeIdMap = new SpecialType[(int)Microsoft.Cci.PrimitiveTypeCode.Invalid + 1];
 
@@ -131,6 +133,7 @@ namespace Microsoft.CodeAnalysis
             s_typeCodeToTypeIdMap[(int)Microsoft.Cci.PrimitiveTypeCode.Float64] = SpecialType.System_Double;
             s_typeCodeToTypeIdMap[(int)Microsoft.Cci.PrimitiveTypeCode.IntPtr] = SpecialType.System_IntPtr;
             s_typeCodeToTypeIdMap[(int)Microsoft.Cci.PrimitiveTypeCode.UIntPtr] = SpecialType.System_UIntPtr;
+            // s_typeCodeToTypeIdMap[(int)Microsoft.Cci.PrimitiveTypeCode.Unit] = SpecialType.System_Unit;
         }
 
         /// <summary>

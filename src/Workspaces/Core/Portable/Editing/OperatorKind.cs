@@ -139,5 +139,11 @@ namespace Microsoft.CodeAnalysis.Editing
         /// The name assigned to the UnaryPlus operator.
         /// </summary>
         UnaryPlus,
+
+        /// <summary>
+        /// The name assigned to the Multiply operator.
+        /// </summary>
+        UnitMultiply,
+
     }
 }
