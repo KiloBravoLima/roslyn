@@ -515,6 +515,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return SyntaxKind.CharacterLiteralExpression;
                 case SyntaxKind.NumericLiteralToken:
                     return SyntaxKind.NumericLiteralExpression;
+                case SyntaxKind.UnitLiteralToken:
+                    return SyntaxKind.UnitLiteralExpression;
                 case SyntaxKind.NullKeyword:
                     return SyntaxKind.NullLiteralExpression;
                 case SyntaxKind.TrueKeyword:
@@ -523,8 +525,6 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return SyntaxKind.FalseLiteralExpression;
                 case SyntaxKind.ArgListKeyword:
                     return SyntaxKind.ArgListExpression;
-                case SyntaxKind.UnitLiteralToken:
-                    return SyntaxKind.UnitLiteralExpression;
                 default:
                     return SyntaxKind.None;
             }
@@ -596,6 +596,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return SyntaxKind.SubtractExpression;
                 case SyntaxKind.AsteriskToken:
                     return SyntaxKind.MultiplyExpression;
+                case SyntaxKind.CenterDotToken:
+                    return SyntaxKind.MultiplyExpression;  // SyntaxKind.UnitMultiplyExpression;
                 case SyntaxKind.SlashToken:
                     return SyntaxKind.DivideExpression;
                 case SyntaxKind.PercentToken:
@@ -604,8 +606,6 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return SyntaxKind.LogicalAndExpression;
                 case SyntaxKind.BarBarToken:
                     return SyntaxKind.LogicalOrExpression;
-                case SyntaxKind.CenterDotToken:
-                    return SyntaxKind.UnitMultiplyExpression;
                 default:
                     return SyntaxKind.None;
             }

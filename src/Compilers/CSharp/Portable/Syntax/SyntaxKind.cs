@@ -358,7 +358,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         SimpleMemberAccessExpression = 8689,  // dot access:   a.b
         PointerMemberAccessExpression = 8690,  // arrow access:   a->b
         ConditionalAccessExpression = 8691,    // question mark access:   a?.b , a?[1]
-        UnitMultiplyExpression = 8692, 
+        // UnitMultiplyExpression = 8692,   // PublicAP.Unshipped Microsoft.CodeAnalysis.CSharp.SyntaxKind.UnitMultiplyExpression = 8692 -> Microsoft.CodeAnalysis.CSharp.SyntaxKind
 
         // binding expressions
         MemberBindingExpression = 8707,

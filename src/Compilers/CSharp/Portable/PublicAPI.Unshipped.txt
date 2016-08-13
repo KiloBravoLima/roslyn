@@ -5,7 +5,6 @@ Microsoft.CodeAnalysis.CSharp.CSharpCompilationOptions.WithPublicSign(bool publi
 Microsoft.CodeAnalysis.CSharp.SyntaxKind.CenterDotToken = 8222 -> Microsoft.CodeAnalysis.CSharp.SyntaxKind
 Microsoft.CodeAnalysis.CSharp.SyntaxKind.UnitLiteralExpression = 8755 -> Microsoft.CodeAnalysis.CSharp.SyntaxKind
 Microsoft.CodeAnalysis.CSharp.SyntaxKind.UnitLiteralToken = 8518 -> Microsoft.CodeAnalysis.CSharp.SyntaxKind
-Microsoft.CodeAnalysis.CSharp.SyntaxKind.UnitMultiplyExpression = 8692 -> Microsoft.CodeAnalysis.CSharp.SyntaxKind
 static Microsoft.CodeAnalysis.CSharp.SyntaxFactory.DocumentationComment(params Microsoft.CodeAnalysis.CSharp.Syntax.XmlNodeSyntax[] content) -> Microsoft.CodeAnalysis.CSharp.Syntax.DocumentationCommentTriviaSyntax
 static Microsoft.CodeAnalysis.CSharp.SyntaxFactory.XmlCrefAttribute(Microsoft.CodeAnalysis.CSharp.Syntax.CrefSyntax cref) -> Microsoft.CodeAnalysis.CSharp.Syntax.XmlCrefAttributeSyntax
 static Microsoft.CodeAnalysis.CSharp.SyntaxFactory.XmlCrefAttribute(Microsoft.CodeAnalysis.CSharp.Syntax.CrefSyntax cref, Microsoft.CodeAnalysis.CSharp.SyntaxKind quoteKind) -> Microsoft.CodeAnalysis.CSharp.Syntax.XmlCrefAttributeSyntax

@@ -493,6 +493,7 @@
       <Kind Name="PlusToken"/>
       <Kind Name="MinusToken"/>
       <Kind Name="AsteriskToken"/>
+      <Kind Name="CenterDotToken"/>
       <Kind Name="SlashToken"/>
       <Kind Name="PercentToken"/>
       <Kind Name="LessThanLessThanToken"/>
@@ -646,6 +647,7 @@
   <Node Name="LiteralExpressionSyntax" Base="ExpressionSyntax">
     <Kind Name="ArgListExpression"/>
     <Kind Name="NumericLiteralExpression"/>
+    <Kind Name="UnitLiteralExpression"/>
     <Kind Name="StringLiteralExpression"/>
     <Kind Name="CharacterLiteralExpression"/>
     <Kind Name="TrueLiteralExpression"/>
