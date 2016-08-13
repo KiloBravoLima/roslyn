@@ -110,11 +110,28 @@ namespace Microsoft.CodeAnalysis.CSharp.ExpressionEvaluator
                 var kind = declaration.IsConst ? LocalDeclarationKind.Constant : LocalDeclarationKind.RegularVariable;
                 foreach (var variable in declaration.Declaration.Variables)
                 {
-                    var local = SourceLocalSymbol.MakeLocal(_containingMethod, this, declaration.Declaration.Type, variable.Identifier, kind, variable.Initializer);
+                    var local = SourceLocalSymbol.MakeLocal(
+                        _containingMethod, 
+                        this, 
+                        true,
+                        declaration.Declaration.Type, 
+                        variable.Identifier, 
+                        kind, 
+                        variable.Initializer);
                     builder.Add(local);
                 }
             }
             return builder.ToImmutableAndFree();
+        }
+
+        internal override ImmutableArray<LocalSymbol> GetDeclaredLocalsForScope(CSharpSyntaxNode scopeDesignator)
+        {
+            throw ExceptionUtilities.Unreachable;
+        }
+
+        internal override ImmutableArray<LocalFunctionSymbol> GetDeclaredLocalFunctionsForScope(CSharpSyntaxNode scopeDesignator)
+        {
+            throw ExceptionUtilities.Unreachable;
         }
     }
 }

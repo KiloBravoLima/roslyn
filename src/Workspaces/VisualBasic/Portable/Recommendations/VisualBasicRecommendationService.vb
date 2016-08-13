@@ -4,7 +4,6 @@ Imports System.Collections.Immutable
 Imports System.Composition
 Imports System.Threading
 Imports Microsoft.CodeAnalysis.Host.Mef
-Imports Microsoft.CodeAnalysis.LanguageServices
 Imports Microsoft.CodeAnalysis.Options
 Imports Microsoft.CodeAnalysis.Recommendations
 Imports Microsoft.CodeAnalysis.Shared.Extensions.ContextQuery
@@ -23,7 +22,7 @@ Namespace Microsoft.CodeAnalysis.VisualBasic.Recommendations
             position As Integer,
             options As OptionSet,
             cancellationToken As CancellationToken
-        ) As Tasks.Task(Of Tuple(Of IEnumerable(Of ISymbol), AbstractSyntaxContext))
+        ) As Tasks.Task(Of Tuple(Of IEnumerable(Of ISymbol), SyntaxContext))
 
             Dim context = Await VisualBasicSyntaxContext.CreateContextAsync(workspace, semanticModel, position, cancellationToken).ConfigureAwait(False)
 
@@ -33,7 +32,7 @@ Namespace Microsoft.CodeAnalysis.VisualBasic.Recommendations
             Dim hideAdvancedMembers = options.GetOption(RecommendationOptions.HideAdvancedMembers, semanticModel.Language)
             symbols = symbols.FilterToVisibleAndBrowsableSymbols(hideAdvancedMembers, semanticModel.Compilation)
 
-            Return Tuple.Create(Of IEnumerable(Of ISymbol), AbstractSyntaxContext)(symbols, context)
+            Return Tuple.Create(Of IEnumerable(Of ISymbol), SyntaxContext)(symbols, context)
         End Function
 
         Private Function GetSymbolsWorker(
@@ -72,9 +71,21 @@ Namespace Microsoft.CodeAnalysis.VisualBasic.Recommendations
                 Dim symbols = GetUnqualifiedSymbolsForExpressionOrStatementContext(context, filterOutOfScopeLocals, cancellationToken) _
                     .Where(AddressOf IsWritableFieldOrLocal)
                 Return symbols
+            ElseIf context.IsNamespaceDeclarationNameContext Then
+                Return GetUnqualifiedSymbolsForNamespaceDeclarationNameContext(context, cancellationToken)
             End If
 
             Return SpecializedCollections.EmptyEnumerable(Of ISymbol)()
+        End Function
+
+        Private Function GetUnqualifiedSymbolsForNamespaceDeclarationNameContext(context As VisualBasicSyntaxContext, cancellationToken As CancellationToken) As IEnumerable(Of ISymbol)
+            Dim declarationSyntax = context.TargetToken.GetAncestor(Of NamespaceBlockSyntax)
+
+            If declarationSyntax Is Nothing Then
+                Return SpecializedCollections.EmptyEnumerable(Of ISymbol)()
+            End If
+
+            Return GetRecommendedNamespaceNameSymbols(context.SemanticModel, declarationSyntax, cancellationToken)
         End Function
 
         Private Function IsWritableFieldOrLocal(symbol As ISymbol) As Boolean
@@ -170,7 +181,6 @@ Namespace Microsoft.CodeAnalysis.VisualBasic.Recommendations
                 symbols = symbols.Where(Function(s) Not IsInEligibleDelegate(s))
             End If
 
-
             ' Hide backing fields and events
             Return symbols.Where(Function(s) FilterEventsAndGeneratedSymbols(Nothing, s))
         End Function
@@ -190,11 +200,6 @@ Namespace Microsoft.CodeAnalysis.VisualBasic.Recommendations
             cancellationToken As CancellationToken
         ) As IEnumerable(Of ISymbol)
 
-            ' We shouldn't show completion if we're inside of a namespace statement.
-            If context.TargetToken.Parent.FirstAncestorOrSelf(Of NamespaceStatementSyntax)() IsNot Nothing Then
-                Return SpecializedCollections.EmptyEnumerable(Of ISymbol)()
-            End If
-
             ' We're in a name-only context, since if we were an expression we'd be a
             ' MemberAccessExpressionSyntax. Thus, let's do other namespaces and types.
             Dim leftHandSymbolInfo = context.SemanticModel.GetSymbolInfo(node.Left, cancellationToken)
@@ -212,6 +217,11 @@ Namespace Microsoft.CodeAnalysis.VisualBasic.Recommendations
             Else
                 symbols = context.SemanticModel _
                     .LookupNamespacesAndTypes(position:=node.SpanStart, container:=leftHandSymbol)
+
+                If context.IsNamespaceDeclarationNameContext Then
+                    Dim declarationSyntax = node.GetAncestor(Of NamespaceBlockSyntax)
+                    symbols = symbols.Where(Function(symbol) IsNonIntersectingNamespace(symbol, declarationSyntax))
+                End If
             End If
 
             Return FilterToValidAccessibleSymbols(symbols, context, cancellationToken)

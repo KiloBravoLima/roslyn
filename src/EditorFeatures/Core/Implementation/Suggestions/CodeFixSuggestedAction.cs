@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis.Editor.Host;
 using Microsoft.CodeAnalysis.Shared.TestHooks;
 using Microsoft.VisualStudio.Language.Intellisense;
 using Microsoft.VisualStudio.Text;
-using Roslyn.Utilities;
 
 namespace Microsoft.CodeAnalysis.Editor.Implementation.Suggestions
 {
@@ -76,7 +75,7 @@ namespace Microsoft.CodeAnalysis.Editor.Implementation.Suggestions
                 fixAllSuggestedActions.Add(fixAllSuggestedAction);
             }
 
-            return new SuggestedActionSet(fixAllSuggestedActions.ToImmutable(), title: EditorFeaturesResources.FixAllOccurrencesIn);
+            return new SuggestedActionSet(fixAllSuggestedActions.ToImmutable(), title: EditorFeaturesResources.Fix_all_occurrences_in);
         }
 
         public string GetDiagnosticID()

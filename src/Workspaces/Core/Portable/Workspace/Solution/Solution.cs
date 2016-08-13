@@ -1,4 +1,4 @@
-﻿// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
+// Copyright (c) Microsoft.  All Rights Reserved.  Licensed under the Apache License, Version 2.0.  See License.txt in the project root for license information.
 
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.ErrorReporting;
+using Microsoft.CodeAnalysis.Options;
+using Microsoft.CodeAnalysis.Shared.Extensions;
 using Microsoft.CodeAnalysis.Text;
 using Roslyn.Collections.Immutable;
 using Roslyn.Utilities;
@@ -594,7 +596,7 @@ namespace Microsoft.CodeAnalysis
             var languageServices = this.Workspace.Services.GetLanguageServices(language);
             if (languageServices == null)
             {
-                throw new ArgumentException(string.Format(WorkspacesResources.UnsupportedLanguage, language));
+                throw new ArgumentException(string.Format(WorkspacesResources.The_language_0_is_not_supported, language));
             }
 
             var newProject = new ProjectState(projectInfo, languageServices, _solutionServices);
@@ -1303,7 +1305,7 @@ namespace Microsoft.CodeAnalysis
             CheckNotContainsDocument(document.Id);
             CheckContainsProject(document.Id.ProjectId);
 
-            return this.AddDocument(document.State);
+            return this.AddDocument((DocumentState)document.State);
         }
 
         /// <summary>
@@ -1830,7 +1832,8 @@ namespace Microsoft.CodeAnalysis
                 return ImmutableArray.Create<DocumentId>(documentId);
             }
 
-            return this.GetDocumentIdsWithFilePath(filePath);
+            var documentIds = this.GetDocumentIdsWithFilePath(filePath);
+            return this.FilterDocumentIdsByLanguage(documentIds, projectState.ProjectInfo.Language).ToImmutableArray();
         }
 
         /// <summary>
@@ -1950,7 +1953,7 @@ namespace Microsoft.CodeAnalysis
                         || _documentIdOfLatestSolutionWithPartialCompilation != documentId)
                     {
                         var tracker = this.GetCompilationTracker(documentId.ProjectId);
-                        var newTracker = tracker.FreezePartialStateWithTree(this, doc.State, tree, cancellationToken);
+                        var newTracker = tracker.FreezePartialStateWithTree(this, (DocumentState)doc.State, tree, cancellationToken);
 
                         var newIdToProjectStateMap = _projectIdToProjectStateMap.SetItem(documentId.ProjectId, newTracker.ProjectState);
                         var newIdToTrackerMap = _projectIdToTrackerMap.SetItem(documentId.ProjectId, newTracker);
@@ -2200,7 +2203,7 @@ namespace Microsoft.CodeAnalysis
         {
             if (this.ContainsProject(projectId))
             {
-                throw new InvalidOperationException(WorkspacesResources.ProjectAlreadyInSolution);
+                throw new InvalidOperationException(WorkspacesResources.The_solution_already_contains_the_specified_project);
             }
         }
 
@@ -2208,7 +2211,7 @@ namespace Microsoft.CodeAnalysis
         {
             if (!this.ContainsProject(projectId))
             {
-                throw new InvalidOperationException(WorkspacesResources.ProjectNotInSolution);
+                throw new InvalidOperationException(WorkspacesResources.The_solution_does_not_contain_the_specified_project);
             }
         }
 
@@ -2216,7 +2219,7 @@ namespace Microsoft.CodeAnalysis
         {
             if (this.GetProjectState(projectId).ProjectReferences.Contains(referencedProject))
             {
-                throw new InvalidOperationException(WorkspacesResources.ProjectDirectlyReferencesTargetProject);
+                throw new InvalidOperationException(WorkspacesResources.The_project_already_references_the_target_project);
             }
         }
 
@@ -2225,7 +2228,7 @@ namespace Microsoft.CodeAnalysis
             var dependents = _dependencyGraph.GetProjectsThatThisProjectTransitivelyDependsOn(fromProjectId);
             if (dependents.Contains(toProjectId))
             {
-                throw new InvalidOperationException(WorkspacesResources.ProjectTransitivelyReferencesTargetProject);
+                throw new InvalidOperationException(WorkspacesResources.The_project_already_transitively_references_the_target_project);
             }
         }
 
@@ -2237,7 +2240,7 @@ namespace Microsoft.CodeAnalysis
             {
                 if (projectState.ProjectReferences.Any(p => GetProjectState(p.ProjectId).IsSubmission))
                 {
-                    throw new InvalidOperationException(WorkspacesResources.InvalidSubmissionReference);
+                    throw new InvalidOperationException(WorkspacesResources.This_submission_already_references_another_submission_project);
                 }
             }
         }
@@ -2248,7 +2251,7 @@ namespace Microsoft.CodeAnalysis
 
             if (this.ContainsDocument(documentId))
             {
-                throw new InvalidOperationException(WorkspacesResources.DocumentAlreadyInSolution);
+                throw new InvalidOperationException(WorkspacesResources.The_solution_already_contains_the_specified_document);
             }
         }
 
@@ -2258,7 +2261,7 @@ namespace Microsoft.CodeAnalysis
 
             if (this.ContainsAdditionalDocument(documentId))
             {
-                throw new InvalidOperationException(WorkspacesResources.DocumentAlreadyInSolution);
+                throw new InvalidOperationException(WorkspacesResources.The_solution_already_contains_the_specified_document);
             }
         }
 
@@ -2268,7 +2271,7 @@ namespace Microsoft.CodeAnalysis
 
             if (!this.ContainsDocument(documentId))
             {
-                throw new InvalidOperationException(WorkspacesResources.DocumentNotInSolution);
+                throw new InvalidOperationException(WorkspacesResources.The_solution_does_not_contain_the_specified_document);
             }
         }
 
@@ -2278,7 +2281,20 @@ namespace Microsoft.CodeAnalysis
 
             if (!this.ContainsAdditionalDocument(documentId))
             {
-                throw new InvalidOperationException(WorkspacesResources.DocumentNotInSolution);
+                throw new InvalidOperationException(WorkspacesResources.The_solution_does_not_contain_the_specified_document);
+            }
+        }
+
+        /// <summary>
+        /// Returns the options that should be applied to this solution. This consists of global options from <see cref="Workspace.Options"/>,
+        /// merged with any settings the user has specified at the solution level.
+        /// </summary>
+        public OptionSet Options
+        {
+            get
+            {
+                // TODO: merge with solution-specific options
+                return this.Workspace.Options;
             }
         }
     }
