@@ -191,12 +191,6 @@ Friend Class MockNamedTypeSymbol
         End Get
     End Property
 
-    Public Overrides ReadOnly Property EnumUnderlyingType As NamedTypeSymbol
-        Get
-            Throw New InvalidOperationException()
-        End Get
-    End Property
-
     Public Overloads Overrides Function GetAttributes() As ImmutableArray(Of VisualBasicAttributeData)
         Return ImmutableArray.Create(Of VisualBasicAttributeData)()
     End Function
@@ -570,6 +564,12 @@ Friend Class MockMethodSymbol
     Public Overrides ReadOnly Property Parameters As ImmutableArray(Of ParameterSymbol)
         Get
             Return ImmutableArray.Create(Of ParameterSymbol)()
+        End Get
+    End Property
+
+    Public Overrides ReadOnly Property ReturnsByRef As Boolean
+        Get
+            Return False
         End Get
     End Property
 

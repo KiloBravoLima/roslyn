@@ -11,13 +11,9 @@
     <ProjectGuid>{190CE348-596E-435A-9E5B-12A689F9FC29}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>Roslyn.Compilers.VisualBasic.Emit.UnitTests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
   </PropertyGroup>
   <ItemGroup Label="Project References">
-    <ProjectReference Include="..\..\..\..\Dependencies\DiaSymReader\DiaSymReader.csproj">
-      <Project>{27b7a354-80cc-4bac-abf5-d4081056cea9}</Project>
-      <Name>DiaSymReader</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\..\..\Test\PdbUtilities\PdbUtilities.csproj">
       <Project>{AFDE6BEA-5038-4A4A-A88E-DBD2E4088EED}</Project>
       <Name>PdbUtilities</Name>
@@ -94,6 +90,7 @@
     <Compile Include="CodeGen\CodeGenAsyncTests.vb" />
     <Compile Include="CodeGen\CodeGenClosureLambdaTests.vb" />
     <Compile Include="CodeGen\CodeGenCollectionInitializer.vb" />
+    <Compile Include="CodeGen\CodeGenTuples.vb" />
     <Compile Include="CodeGen\CodeGenConstLocal.vb" />
     <Compile Include="CodeGen\CodeGenDelegateCreation.vb" />
     <Compile Include="CodeGen\CodeGenEvents.vb" />
@@ -112,6 +109,7 @@
     <Compile Include="CodeGen\CodeGenNullable.vb" />
     <Compile Include="CodeGen\CodeGenObjectInitializer.vb" />
     <Compile Include="CodeGen\CodeGenOverridingAndHiding.vb" />
+    <Compile Include="CodeGen\CodeGenRefReturnTests.vb" />
     <Compile Include="CodeGen\CodeGenSelectCase.vb" />
     <Compile Include="CodeGen\CodeGenSingleLineIf.vb" />
     <Compile Include="CodeGen\CodeGenStaticLocals.vb" />
@@ -131,6 +129,8 @@
     <Compile Include="CodeGen\WinRTCollectionTests.vb" />
     <Compile Include="Emit\CompilationEmitTests.vb" />
     <Compile Include="Emit\DeterministicTests.vb" />
+    <Compile Include="Emit\DynamicAnalysis\DynamicAnalysisResourceTests.vb" />
+    <Compile Include="Emit\DynamicAnalysis\DynamicInstrumentationTests.vb" />
     <Compile Include="Emit\EditAndContinue\AssemblyReferencesTests.vb" />
     <Compile Include="Emit\EditAndContinue\EditAndContinueClosureTests.vb" />
     <Compile Include="Emit\EditAndContinue\EditAndContinueStateMachineTests.vb" />

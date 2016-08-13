@@ -830,7 +830,7 @@ Namespace Microsoft.CodeAnalysis.VisualBasic
             Return Not hasError
         End Function
 
-        Private Function IsValidBranchTarget(block As VisualBasicSyntaxNode, labelSyntax As LabelSyntax) As Boolean
+        Private Shared Function IsValidBranchTarget(block As VisualBasicSyntaxNode, labelSyntax As LabelSyntax) As Boolean
             Debug.Assert(block.Kind = SyntaxKind.TryBlock OrElse
                          block.Kind = SyntaxKind.CatchBlock OrElse
                          block.Kind = SyntaxKind.FinallyBlock OrElse
@@ -1869,10 +1869,15 @@ Namespace Microsoft.CodeAnalysis.VisualBasic
 
                 Case BoundKind.PropertyAccess
                     Dim propertyAccess As BoundPropertyAccess = DirectCast(op1, BoundPropertyAccess)
-                    Debug.Assert(propertyAccess.AccessKind <> PropertyAccessKind.Get)
                     Dim propertySymbol As PropertySymbol = propertyAccess.PropertySymbol
 
-                    Dim receiver As BoundExpression = propertyAccess.ReceiverOpt
+                    If propertyAccess.IsLValue Then
+                        Debug.Assert(propertySymbol.ReturnsByRef)
+                        WarnOnRecursiveAccess(propertyAccess, PropertyAccessKind.Get, diagnostics)
+                        Return propertyAccess.SetAccessKind(PropertyAccessKind.Get)
+                    End If
+
+                    Debug.Assert(propertyAccess.AccessKind <> PropertyAccessKind.Get)
 
                     If Not propertyAccess.IsWriteable Then
                         ReportDiagnostic(diagnostics, node, ERRID.ERR_NoSetProperty1, CustomSymbolDisplayFormatter.ShortErrorName(propertySymbol))
@@ -1890,7 +1895,7 @@ Namespace Microsoft.CodeAnalysis.VisualBasic
                             If ReportUseSiteError(diagnostics, op1.Syntax, setMethod) Then
                                 isError = True
                             Else
-                                Dim accessThroughType = GetAccessThroughType(receiver)
+                                Dim accessThroughType = GetAccessThroughType(propertyAccess.ReceiverOpt)
                                 Dim useSiteDiagnostics As HashSet(Of DiagnosticInfo) = Nothing
 
                                 If Not IsAccessible(setMethod, useSiteDiagnostics, accessThroughType) AndAlso
@@ -1978,11 +1983,7 @@ Namespace Microsoft.CodeAnalysis.VisualBasic
                 right = MakeRValueAndIgnoreDiagnostics(right)
             End If
 
-            If left.IsPropertyOrXmlPropertyAccess() Then
-                left = left.SetAccessKind(PropertyAccessKind.Get Or PropertyAccessKind.Set)
-            ElseIf left.IsLateBound() Then
-                left = left.SetLateBoundAccessKind(LateBoundAccessKind.Get Or LateBoundAccessKind.Set)
-            End If
+            left = left.SetGetSetAccessKindIfAppropriate()
 
             Return New BoundAssignmentOperator(node, left, placeholder, right, False, hasErrors:=isError)
         End Function
@@ -2180,11 +2181,7 @@ Namespace Microsoft.CodeAnalysis.VisualBasic
                 Debug.Assert((original.Kind = BoundKind.CompoundAssignmentTargetPlaceholder) = (right.Kind = BoundKind.MidResult) OrElse original.HasErrors OrElse right.HasErrors)
             End If
 
-            If target.IsPropertyOrXmlPropertyAccess() Then
-                target = target.SetAccessKind(PropertyAccessKind.Get Or PropertyAccessKind.Set)
-            ElseIf target.IsLateBound() Then
-                target = target.SetLateBoundAccessKind(LateBoundAccessKind.Get Or LateBoundAccessKind.Set)
-            End If
+            target = target.SetGetSetAccessKindIfAppropriate()
 
             Return New BoundExpressionStatement(node, New BoundAssignmentOperator(node, target, placeholder, right, False,
                                                                                   Compilation.GetSpecialType(SpecialType.System_Void),
@@ -3243,7 +3240,7 @@ Namespace Microsoft.CodeAnalysis.VisualBasic
         End Function
 
         ' Verify that control variable can actually be used as a control variable
-        Private Function IsValidForControlVariableType(node As ForOrForEachBlockSyntax,
+        Private Shared Function IsValidForControlVariableType(node As ForOrForEachBlockSyntax,
                                     targetType As TypeSymbol,
                                     diagnostics As DiagnosticBag) As Boolean
 
@@ -3493,7 +3490,7 @@ Namespace Microsoft.CodeAnalysis.VisualBasic
         ''' </summary>
         ''' <param name="variableDeclarator">The variable declarator.</param>
         ''' <param name="diagnostics">The diagnostics.</param><returns></returns>
-        Private Function VerifyForControlVariableDeclaration(variableDeclarator As VariableDeclaratorSyntax, diagnostics As DiagnosticBag) As Boolean
+        Private Shared Function VerifyForControlVariableDeclaration(variableDeclarator As VariableDeclaratorSyntax, diagnostics As DiagnosticBag) As Boolean
             ' Check variable declaration syntax if present
             Debug.Assert(variableDeclarator.Names.Count = 1, "should be exactly one control variable")
             Dim identifier = variableDeclarator.Names(0)
@@ -4586,7 +4583,7 @@ Namespace Microsoft.CodeAnalysis.VisualBasic
         ' This method decides if a WRN_MutableStructureInUsing should be shown for a given type of the Using variable.
         ' The purpose of this function is to avoid code duplication in 'CheckForMutableStructureConstraints'. 
         ' This is not a general purpose helper.
-        Private Function ShouldReportMutableStructureInUsing(structureType As TypeSymbol) As Boolean
+        Private Shared Function ShouldReportMutableStructureInUsing(structureType As TypeSymbol) As Boolean
             Debug.Assert(structureType.IsValueType)
 
             If structureType.Kind = SymbolKind.NamedType Then

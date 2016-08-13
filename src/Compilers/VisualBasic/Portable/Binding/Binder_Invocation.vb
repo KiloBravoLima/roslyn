@@ -140,7 +140,17 @@ Namespace Microsoft.CodeAnalysis.VisualBasic
                 If expr.Kind = BoundKind.Call Then
                     ' Set HasErrors to prevent cascading errors.
                     Dim callExpr = DirectCast(expr, BoundCall)
-                    expr = New BoundCall(callExpr.Syntax, callExpr.Method, callExpr.MethodGroupOpt, callExpr.ReceiverOpt, callExpr.Arguments, callExpr.ConstantValueOpt, False, callExpr.Type, hasErrors:=True)
+                    expr = New BoundCall(
+                        callExpr.Syntax,
+                        callExpr.Method,
+                        callExpr.MethodGroupOpt,
+                        callExpr.ReceiverOpt,
+                        callExpr.Arguments,
+                        callExpr.ConstantValueOpt,
+                        isLValue:=False,
+                        suppressObjectClone:=False,
+                        type:=callExpr.Type,
+                        hasErrors:=True)
                 End If
 
                 Return expr
@@ -921,8 +931,8 @@ Namespace Microsoft.CodeAnalysis.VisualBasic
                     receiver,
                     boundArguments,
                     constantValue,
-                    False,
                     returnType,
+                    suppressObjectClone:=False,
                     hasErrors:=hasErrors)
 
             Else
@@ -1734,7 +1744,7 @@ ProduceBoundNode:
         End Function
 
 
-        Private Sub ReportUnspecificProcedures(
+        Private Shared Sub ReportUnspecificProcedures(
             diagnosticLocation As Location,
             bestSymbols As ImmutableArray(Of Symbol),
             diagnostics As DiagnosticBag,
@@ -1771,7 +1781,7 @@ ProduceBoundNode:
                 If isDelegateContext Then
                     If bestSymbolIsExtension Then
                         diagnosticInfos.Add(ErrorFactory.ErrorInfo(ERRID.ERR_ExtensionMethodOverloadCandidate2, bestSymbol, bestSymbol.ContainingType))
-                    ElseIf withContainingTypeInDiagnostics
+                    ElseIf withContainingTypeInDiagnostics Then
                         diagnosticInfos.Add(ErrorFactory.ErrorInfo(ERRID.ERR_OverloadCandidate1, CustomSymbolDisplayFormatter.WithContainingType(bestSymbol)))
                     Else
                         diagnosticInfos.Add(ErrorFactory.ErrorInfo(ERRID.ERR_OverloadCandidate1, bestSymbol))
@@ -1779,7 +1789,7 @@ ProduceBoundNode:
                 Else
                     If bestSymbolIsExtension Then
                         diagnosticInfos.Add(ErrorFactory.ErrorInfo(ERRID.ERR_ExtensionMethodOverloadCandidate3, bestSymbol, bestSymbol.ContainingType, notMostSpecificMessage))
-                    ElseIf withContainingTypeInDiagnostics
+                    ElseIf withContainingTypeInDiagnostics Then
                         diagnosticInfos.Add(ErrorFactory.ErrorInfo(ERRID.ERR_OverloadCandidate2, CustomSymbolDisplayFormatter.WithContainingType(bestSymbol), notMostSpecificMessage))
                     Else
                         diagnosticInfos.Add(ErrorFactory.ErrorInfo(ERRID.ERR_OverloadCandidate2, bestSymbol, notMostSpecificMessage))
@@ -2792,6 +2802,10 @@ ProduceBoundNode:
             ' TODO: Fields of MarshalByRef object are passed via temp.
 
             Dim isLValue As Boolean = argument.IsLValue()
+
+            If isLValue AndAlso argument.Kind = BoundKind.PropertyAccess Then
+                argument = argument.SetAccessKind(PropertyAccessKind.Get)
+            End If
 
             If isLValue AndAlso Conversions.IsIdentityConversion(conversionTo.Key) Then
                 'Nothing to do
