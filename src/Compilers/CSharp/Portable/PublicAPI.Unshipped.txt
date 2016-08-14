@@ -181,6 +181,9 @@ Microsoft.CodeAnalysis.CSharp.SyntaxKind.TupleType = 8925 -> Microsoft.CodeAnaly
 Microsoft.CodeAnalysis.CSharp.SyntaxKind.TypedVariableComponent = 8928 -> Microsoft.CodeAnalysis.CSharp.SyntaxKind
 Microsoft.CodeAnalysis.CSharp.SyntaxKind.VariableComponentAssignment = 8933 -> Microsoft.CodeAnalysis.CSharp.SyntaxKind
 Microsoft.CodeAnalysis.CSharp.SyntaxKind.WhenClause = 9013 -> Microsoft.CodeAnalysis.CSharp.SyntaxKind
+Microsoft.CodeAnalysis.CSharp.SyntaxKind.CenterDotToken = 8222 -> Microsoft.CodeAnalysis.CSharp.SyntaxKind
+Microsoft.CodeAnalysis.CSharp.SyntaxKind.UnitLiteralExpression = 8755 -> Microsoft.CodeAnalysis.CSharp.SyntaxKind
+Microsoft.CodeAnalysis.CSharp.SyntaxKind.UnitLiteralToken = 8518 -> Microsoft.CodeAnalysis.CSharp.SyntaxKind
 abstract Microsoft.CodeAnalysis.CSharp.Syntax.CommonForEachStatementSyntax.CloseParenToken.get -> Microsoft.CodeAnalysis.SyntaxToken
 abstract Microsoft.CodeAnalysis.CSharp.Syntax.CommonForEachStatementSyntax.Expression.get -> Microsoft.CodeAnalysis.CSharp.Syntax.ExpressionSyntax
 abstract Microsoft.CodeAnalysis.CSharp.Syntax.CommonForEachStatementSyntax.ForEachKeyword.get -> Microsoft.CodeAnalysis.SyntaxToken

@@ -446,6 +446,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case SyntaxKind.GreaterThanEqualsToken:
                 case SyntaxKind.GreaterThanGreaterThanToken:
                 case SyntaxKind.ExclamationEqualsToken:
+                case SyntaxKind.CenterDotToken:
                     return true;
                 default:
                     return false;
@@ -515,6 +516,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return SyntaxKind.CharacterLiteralExpression;
                 case SyntaxKind.NumericLiteralToken:
                     return SyntaxKind.NumericLiteralExpression;
+                case SyntaxKind.UnitLiteralToken:
+                    return SyntaxKind.UnitLiteralExpression;
                 case SyntaxKind.NullKeyword:
                     return SyntaxKind.NullLiteralExpression;
                 case SyntaxKind.TrueKeyword:
@@ -594,6 +597,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return SyntaxKind.SubtractExpression;
                 case SyntaxKind.AsteriskToken:
                     return SyntaxKind.MultiplyExpression;
+                case SyntaxKind.CenterDotToken:
+                    return SyntaxKind.MultiplyExpression;  // SyntaxKind.UnitMultiplyExpression;
                 case SyntaxKind.SlashToken:
                     return SyntaxKind.DivideExpression;
                 case SyntaxKind.PercentToken:
@@ -970,6 +975,7 @@ namespace Microsoft.CodeAnalysis.CSharp
                 case WellKnownMemberNames.LogicalNotOperatorName: return SyntaxKind.ExclamationToken;
                 case WellKnownMemberNames.ModulusOperatorName: return SyntaxKind.PercentToken;
                 case WellKnownMemberNames.MultiplyOperatorName: return SyntaxKind.AsteriskToken;
+                case WellKnownMemberNames.UnitMultiplyOperatorName: return SyntaxKind.CenterDotToken;
                 case WellKnownMemberNames.OnesComplementOperatorName: return SyntaxKind.TildeToken;
                 case WellKnownMemberNames.RightShiftOperatorName: return SyntaxKind.GreaterThanGreaterThanToken;
                 case WellKnownMemberNames.SubtractionOperatorName: return SyntaxKind.MinusToken;
@@ -1237,6 +1243,8 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return ">";
                 case SyntaxKind.DotToken:
                     return ".";
+                case SyntaxKind.CenterDotToken:
+                    return "·"; // center dot  '\0x0B7' (Char)183 U+00B7
                 case SyntaxKind.QuestionToken:
                     return "?";
                 case SyntaxKind.HashToken:

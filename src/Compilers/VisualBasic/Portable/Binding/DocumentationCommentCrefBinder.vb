@@ -948,6 +948,12 @@ lAgain:
                         CollectOperatorsAndConversionsInType(type, symbols, MethodKind.UserDefinedOperator, WellKnownMemberNames.MultiplyOperatorName, opInfo, useSiteDiagnostics)
                     End If
 
+                    'Case SyntaxKind.CenterDot
+                    '   If argCount = 2 Then
+                    '  Dim opInfo As New OverloadResolution.OperatorInfo(BinaryOperatorKind.Multiply)
+                    ' CollectOperatorsAndConversionsInType(type, symbols, MethodKind.UserDefinedOperator, WellKnownMemberNames.MultiplyOperatorName, opInfo, useSiteDiagnostics)
+                    'End If
+
                 Case SyntaxKind.SlashToken
                     If argCount = 2 Then
                         Dim opInfo As New OverloadResolution.OperatorInfo(BinaryOperatorKind.Divide)

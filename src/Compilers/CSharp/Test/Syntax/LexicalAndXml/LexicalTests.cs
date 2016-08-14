@@ -571,6 +571,7 @@ namespace Microsoft.CodeAnalysis.CSharp.UnitTests
             TestPunctuation(SyntaxKind.CaretToken);
             TestPunctuation(SyntaxKind.AmpersandToken);
             TestPunctuation(SyntaxKind.AsteriskToken);
+            TestPunctuation(SyntaxKind.CenterDotToken);
             TestPunctuation(SyntaxKind.OpenParenToken);
             TestPunctuation(SyntaxKind.CloseParenToken);
             TestPunctuation(SyntaxKind.MinusToken);
