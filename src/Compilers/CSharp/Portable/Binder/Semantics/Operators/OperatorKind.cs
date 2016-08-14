@@ -50,6 +50,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         _NullableNull = 0x00000030, // reserved for binary op
         UserDefined = 0x00000031,
         Dynamic = 0x00000032,
+        Unit = 0x00000033,
 
         OpMask = 0x0000FF00,
         PostfixIncrement = 0x00001000,
@@ -295,6 +296,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         NullableNull = UnaryOperatorKind._NullableNull,
         UserDefined = UnaryOperatorKind.UserDefined,
         Dynamic = UnaryOperatorKind.Dynamic,
+        Unit = UnaryOperatorKind.Unit,
 
         OpMask = 0x0000FF00,
         Multiplication = 0x00001000,
@@ -337,6 +339,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         LiftedDecimalMultiplication = Lifted | Decimal | Multiplication,
         LiftedUserDefinedMultiplication = Lifted | UserDefined | Multiplication,
         DynamicMultiplication = Dynamic | Multiplication,
+        UnitMultiplication = Unit | Multiplication,
 
         IntDivision = Int | Division,
         UIntDivision = UInt | Division,
@@ -355,6 +358,7 @@ namespace Microsoft.CodeAnalysis.CSharp
         LiftedDecimalDivision = Lifted | Decimal | Division,
         LiftedUserDefinedDivision = Lifted | UserDefined | Division,
         DynamicDivision = Dynamic | Division,
+        UnitDivision = Unit | Division,
 
         IntRemainder = Int | Remainder,
         UIntRemainder = UInt | Remainder,

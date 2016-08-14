@@ -875,6 +875,13 @@ namespace Microsoft.CodeAnalysis.CSharp
                     return SpecializedCollections.SingletonEnumerable(new TypeInferenceInfo(this.Compilation.GetSpecialType(SpecialType.System_Boolean)));
                 }
 
+                // Infer operands of "·" (center dot) as Unit regardless of the other operand.
+                if (operatorToken.Kind() == SyntaxKind.CenterDotToken)
+                {
+                    // return SpecializedCollections.SingletonEnumerable(this.Compilation.GetSpecialType(SpecialType.System_Unit));
+                    return SpecializedCollections.SingletonEnumerable(this.Compilation.GetSpecialType(SpecialType.System_ValueType));
+                }
+
                 // Try to figure out what's on the other side of the binop.  If we can, then just that
                 // type.  This is often a reasonable heuristics to use for most operators.  NOTE(cyrusn):
                 // we could try to bind the token to see what overloaded operators it corresponds to.

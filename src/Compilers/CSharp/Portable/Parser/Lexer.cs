@@ -521,6 +521,11 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
 
                     break;
 
+                case '·':  // center dot  '\0x0B7' (Char)183 U+00B7
+                    TextWindow.AdvanceChar();
+                    info.Kind = SyntaxKind.CenterDotToken;
+                    break;
+
                 case '(':
                     TextWindow.AdvanceChar();
                     info.Kind = SyntaxKind.OpenParenToken;
@@ -3777,6 +3782,9 @@ namespace Microsoft.CodeAnalysis.CSharp.Syntax.InternalSyntax
                     break;
                 case '*':
                     info.Kind = SyntaxKind.AsteriskToken;
+                    break;
+                case '·':  // center dot  '\0x0B7' (Char)183 U+00B7
+                    info.Kind = SyntaxKind.CenterDotToken;
                     break;
                 case '|':
                     info.Kind = SyntaxKind.BarToken;

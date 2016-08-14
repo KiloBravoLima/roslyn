@@ -907,6 +907,7 @@ class A
     public int operator +(__arglist) { return 0; } //illegal, but shouldn't break
     public int operator -(A a, __arglist) { return 0; } //illegal, but shouldn't break
     public int operator *(__arglist, A a) { return 0; } //illegal, but shouldn't break
+    public int operator ·(__arglist, A a) { return 0; } //illegal, but shouldn't break
     public int operator /(__arglist, A a, __arglist) { return 0; } //illegal, but shouldn't break
 }
 ";
@@ -926,9 +927,13 @@ class A
             Assert.Equal(1, m3.ParameterCount);
             Assert.Equal(1, m3.Parameters.Length);
 
-            var m4 = type.GetMember<MethodSymbol>(WellKnownMemberNames.DivisionOperatorName);
+            var m4 = type.GetMember<MethodSymbol>(WellKnownMemberNames.UnitMultiplyOperatorName);
             Assert.Equal(1, m4.ParameterCount);
             Assert.Equal(1, m4.Parameters.Length);
+
+            var m5 = type.GetMember<MethodSymbol>(WellKnownMemberNames.DivisionOperatorName);
+            Assert.Equal(1, m5.ParameterCount);
+            Assert.Equal(1, m5.Parameters.Length);
         }
 
         [WorkItem(545055, "http://vstfdevdiv:8080/DevDiv2/DevDiv/_workitems/edit/545055")]

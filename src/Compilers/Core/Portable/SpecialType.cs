@@ -246,6 +246,12 @@ namespace Microsoft.CodeAnalysis
         /// </summary>
         System_AsyncCallback = 43,
 
+        // System_Unit = 44,
+        /**  PublicAPI.Unshipped.txt added lines
+Microsoft.CodeAnalysis.SpecialType.Count = 44 -> Microsoft.CodeAnalysis.SpecialType
+Microsoft.CodeAnalysis.SpecialType.System_Unit = 1144 -> Microsoft.CodeAnalysis.SpecialType
+          
+        **/
         /// <summary>
         /// Count of special types. This is not a count of enum members.
         /// </summary>
