@@ -47,10 +47,6 @@
       <Project>{288089c5-8721-458e-be3e-78990dab5e2d}</Project>
       <Name>CSharpSyntaxGenerator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Source\VisualBasicErrorFactsGenerator\VisualBasicErrorFactsGenerator.vbproj">
-      <Project>{909b656f-6095-4ac2-a5ab-c3f032315c45}</Project>
-      <Name>VisualBasicErrorFactsGenerator</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Source\VisualBasicSyntaxGenerator\VisualBasicSyntaxGenerator.vbproj">
       <Project>{6aa96934-d6b7-4cc8-990d-db6b9dd56e34}</Project>
       <Name>VisualBasicSyntaxGenerator</Name>
